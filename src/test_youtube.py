@@ -7,9 +7,9 @@ def test_youtube_scraper():
     scraper = YouTubeScraper()
     
     # Search for podcasts
-    person_name = "Jeff Bocan"
+    person_name = "Sean Goldfaden"
     print(f"\nSearching for podcasts featuring {person_name}...")
-    search_results = scraper.search_podcasts(person_name, max_results=15)
+    search_results = scraper.search_podcasts(person_name, max_results=5)
 
     print("\nFound videos:")
     for video in search_results["videos"]:

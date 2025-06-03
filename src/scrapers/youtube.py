@@ -102,11 +102,14 @@ class YouTubeScraper:
                     }
             
             # Format transcript as plain text
-            formatted_transcript = self.formatter.format_transcript(transcript_list)
+            formatted_transcript = ""
+            for segment in transcript_list:
+                if isinstance(segment, dict) and 'text' in segment:
+                    formatted_transcript += segment['text'] + " "
             
             return {
                 'video_id': video_id,
-                'transcript': formatted_transcript,
+                'transcript': formatted_transcript.strip(),
                 'segments': transcript_list  # Original transcript with timestamps
             }
             
