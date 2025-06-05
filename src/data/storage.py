@@ -28,11 +28,25 @@ class DataStorage:
         return data.get("links", [])
     
     def save_transcript(self, video_id: str, transcript: Dict[str, Any]) -> None:
-        """Save a video transcript to a JSON file."""
+        """Save a video transcript to a JSON file.
+        
+        Args:
+            video_id: The YouTube video ID
+            transcript: The transcript response from YouTube API
+        """
         file_path = self.base_dir / "transcripts" / f"{video_id}.json"
         file_path.parent.mkdir(exist_ok=True)
+        
+        # Convert transcript response to a dictionary format
+        transcript_data = {
+            "timestamp": datetime.now().isoformat(),
+            "video_id": video_id,
+            "content": transcript.text if hasattr(transcript, 'text') else str(transcript),
+            "status_code": transcript.status_code if hasattr(transcript, 'status_code') else None
+        }
+        
         with open(file_path, "w") as f:
-            json.dump(transcript, f, indent=2)
+            json.dump(transcript_data, f, indent=2)
             
     def load_transcript(self, video_id: str) -> Dict[str, Any]:
         """Load a video transcript from a JSON file."""

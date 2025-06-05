@@ -1,6 +1,0 @@
-youtube-transcript-api==1.0.3
-apify-client==1.6.3
-python-dotenv==1.0.0
-requests==2.31.0
-pydantic==2.5.2
-google-api-python-client==2.108.0 

@@ -1,12 +1,12 @@
 from typing import List, Dict, Any
 import re
-from youtube_transcript_api import YouTubeTranscriptApi
-from youtube_transcript_api.formatters import TextFormatter
 import requests
 from dotenv import load_dotenv
 import json
-from openai import OpenAI
 import os
+from pathlib import Path
+from youtube_transcript_api import YouTubeTranscriptApi
+import logging
 
 # Load environment variables
 load_dotenv()
@@ -14,9 +14,10 @@ load_dotenv()
 class YouTubeScraper:
     def __init__(self):
         """Initialize the YouTube scraper."""
-        self.formatter = TextFormatter()
-        self.client = OpenAI()
         self.youtube_api_key = os.getenv("YOUTUBE_API_KEY")
+        self.data_dir = Path("data")
+        self.data_dir.mkdir(exist_ok=True)
+        self.captions_file = self.data_dir / "youtube_captions.json"
 
     def search_podcasts(self, person_name: str, max_results: int = 10) -> Dict[str, Any]:
         """
@@ -71,53 +72,4 @@ class YouTubeScraper:
         except Exception as e:
             print(f"Error in search_podcasts: {str(e)}")
             return {"videos": []}
-            
-    def get_transcript(self, video_id: str) -> Dict[str, Any]:
-        """
-        Get the transcript for a YouTube video.
         
-        Args:
-            video_id: YouTube video ID
-            
-        Returns:
-            Dictionary containing transcript information
-        """
-        try:
-            # Try to get transcript in English first
-            try:
-                transcript_list = YouTubeTranscriptApi.get_transcript(video_id, languages=['en'])
-            except Exception as e:
-                # If English fails, try to get any available transcript
-                try:
-                    transcript_list = YouTubeTranscriptApi.get_transcript(video_id)
-                except Exception as e:
-                    # Get list of available transcripts
-                    transcript_list = YouTubeTranscriptApi.list_transcripts(video_id)
-                    available_languages = [t.language_code for t in transcript_list]
-                    return {
-                        'video_id': video_id,
-                        'error': f'No transcript available. Available languages: {available_languages}',
-                        'transcript': '',
-                        'segments': []
-                    }
-            
-            # Format transcript as plain text
-            formatted_transcript = ""
-            for segment in transcript_list:
-                if isinstance(segment, dict) and 'text' in segment:
-                    formatted_transcript += segment['text'] + " "
-            
-            return {
-                'video_id': video_id,
-                'transcript': formatted_transcript.strip(),
-                'segments': transcript_list  # Original transcript with timestamps
-            }
-            
-        except Exception as e:
-            print(f"Error getting transcript for video {video_id}: {str(e)}")
-            return {
-                'video_id': video_id,
-                'error': str(e),
-                'transcript': '',
-                'segments': []
-            }
