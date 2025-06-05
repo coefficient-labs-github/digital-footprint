@@ -1,5 +1,6 @@
 import os
 import json
+import time
 from typing import List
 from dotenv import load_dotenv
 from data.storage import DataStorage
@@ -16,15 +17,6 @@ logging.basicConfig(
     format='%(asctime)s - %(levelname)s - %(message)s',
     datefmt='%Y-%m-%d %H:%M:%S'
 )
-
-def save_transcripts_to_json(transcripts_data, filename="data/transcripts/youtube_captions.json"):
-    """Save transcripts data to a JSON file."""
-    try:
-        with open(filename, 'w', encoding='utf-8') as f:
-            json.dump(transcripts_data, f, indent=2, ensure_ascii=False)
-        logging.info(f"Successfully saved transcripts to {filename}")
-    except Exception as e:
-        logging.error(f"Error saving transcripts to {filename}: {str(e)}")
 
 def main(person_name: str, person_li_url: str):
     # Initialize storage
@@ -61,42 +53,27 @@ def main(person_name: str, person_li_url: str):
     # Get transcripts for each link
     for link in youtube_links:
         vid = link["video_id"]
-        try:
-            # Get transcript list
-            trans_list = ytt_api.list_transcripts(video_id=vid)
-            
-            # Try to get transcript in preferred language (English)
-            try:
-                transcript = trans_list.find_transcript(['en'])
-                transcript_data = transcript.fetch()
-                
-                # Convert transcript data to string
-                if isinstance(transcript_data, list):
-                    full_transcript = ' '.join([part['text'] for part in transcript_data])
-                else:
-                    full_transcript = ' '.join([snippet.text for snippet in transcript_data])
-                
-                # Store transcript with metadata
-                transcripts_data[vid] = {
-                    "title": link["title"],
-                    "channel": link["channel"],
-                    "date": link["date"],
-                    "transcript": full_transcript,
-                    "language": transcript.language_code
-                }
-                logging.info(f"Successfully retrieved transcript for video {vid}")
-                
-            except Exception as e:
-                logging.warning(f"Could not get transcript for video {vid}: {str(e)}")
-                continue
-                
-        except Exception as e:
-            logging.error(f"Error processing video {vid}: {str(e)}")
-            continue
+        logging.info(f"Attempting to get transcript for video {vid}")
+        
+        # Try to get transcript with retry logic
+        transcript, language = youtube_scraper.get_transcript_with_retry(vid)
+        
+        if transcript:
+            # Store transcript with metadata
+            transcripts_data[vid] = {
+                "title": link["title"],
+                "channel": link["channel"],
+                "date": link["date"],
+                "transcript": transcript,
+                "language": language
+            }
+            logging.info(f"Successfully retrieved transcript for video {vid}")
+        else:
+            logging.warning(f"Failed to get transcript for video {vid} after all retry attempts")
     
     # Save all transcripts to JSON file
     if transcripts_data:
-        save_transcripts_to_json(transcripts_data)
+        youtube_scraper.save_transcripts_to_json(transcripts_data)
         logging.info(f"Successfully processed {len(transcripts_data)} transcripts")
     else:
         logging.warning("No transcripts were successfully processed")
