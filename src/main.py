@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from data.storage import DataStorage
 from scrapers.youtube import YouTubeScraper
 from youtube_transcript_api import YouTubeTranscriptApi
+from synthesizers.transcripts_to_questions import process_transcripts
 #from scrapers.linkedin import LinkedInScraper
 #from scrapers.twitter import TwitterScraper
 #from processors.transcript import TranscriptProcessor
@@ -18,18 +19,7 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-def main(person_name: str, person_li_url: str):
-    # Initialize storage
-    storage = DataStorage()
-    
-    # Initialize scrapers
-    youtube_scraper = YouTubeScraper()
-    ytt_api = YouTubeTranscriptApi()
-    #linkedin_scraper = LinkedInScraper()
-    #twitter_scraper = TwitterScraper()
-    
-    logging.info(f"Collecting content for {person_name}...")
-    
+def youtube_scrape(youtube_scraper):
     ### YouTube
     logging.info(f"Searching YouTube for podcasts featuring {person_name}")
     youtube_links = youtube_scraper.search_podcasts(person_name)["videos"]
@@ -77,6 +67,25 @@ def main(person_name: str, person_li_url: str):
         logging.info(f"Successfully processed {len(transcripts_data)} transcripts")
     else:
         logging.warning("No transcripts were successfully processed")
+
+def main(person_name: str, person_li_url: str):
+    # Initialize storage
+    storage = DataStorage()
+    
+    # Initialize scrapers
+    youtube_scraper = YouTubeScraper()
+    #linkedin_scraper = LinkedInScraper()
+    #twitter_scraper = TwitterScraper()
+    
+    logging.info(f"Collecting content for {person_name}...")
+    
+    # Scrape YouTube transcripts
+    youtube_scrape(youtube_scraper)
+
+    # Synthesize youtube transcripts into questions
+    logging.info("Synthesizing transcripts into questions...")
+    process_transcripts()
+    logging.info("Successfully generated questions from transcripts")
 
 """
     # LinkedIn
