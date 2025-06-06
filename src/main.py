@@ -3,13 +3,11 @@ import json
 import time
 from typing import List
 from dotenv import load_dotenv
-from data.storage import DataStorage
 from scrapers.youtube import YouTubeScraper
 from youtube_transcript_api import YouTubeTranscriptApi
 from synthesizers.transcripts_to_questions import process_transcripts
 #from scrapers.linkedin import LinkedInScraper
-#from scrapers.twitter import TwitterScraper
-#from processors.transcript import TranscriptProcessor
+from scrapers.x import XScraper
 import logging
 
 # Configure logging
@@ -19,8 +17,7 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-def youtube_scrape(youtube_scraper):
-    ### YouTube
+def youtube_process(youtube_scraper):
     logging.info(f"Searching YouTube for podcasts featuring {person_name}")
     youtube_links = youtube_scraper.search_podcasts(person_name)["videos"]
     logging.info(f"Found {len(youtube_links)} initial YouTube videos")
@@ -68,10 +65,20 @@ def youtube_scrape(youtube_scraper):
     else:
         logging.warning("No transcripts were successfully processed")
 
-def main(person_name: str, person_li_url: str):
-    # Initialize storage
-    storage = DataStorage()
-    
+def linkedin_process():
+    pass
+
+def x_process():
+    # Initialize scraper
+    scraper = XScraper()
+
+    # Scrape all tweets from PERSON_X_HANDLE (env variable) --> data/x_posts/{{PERSON_X_HANDLE}}.json
+    scraper.scrape_x(os.getenv("PERSON_X_HANDLE"))
+
+    # Format data/x_posts/{{PERSON_X_HANDLE}}.json into a cleaned csv, data/x_posts/cleaned{{PERSON_X_HANDLE}}.csv
+    scraper.format_x_data()
+
+def main(person_name: str, person_li_url: str):    
     # Initialize scrapers
     youtube_scraper = YouTubeScraper()
     #linkedin_scraper = LinkedInScraper()
@@ -80,12 +87,22 @@ def main(person_name: str, person_li_url: str):
     logging.info(f"Collecting content for {person_name}...")
     
     # Scrape YouTube transcripts
-    youtube_scrape(youtube_scraper)
+    logging.info("Starting YouTube process...")
+    youtube_process(youtube_scraper)
 
     # Synthesize youtube transcripts into questions
     logging.info("Synthesizing transcripts into questions...")
     process_transcripts()
     logging.info("Successfully generated questions from transcripts")
+    logging.info("YouTube process complete")
+
+    # Scrape and synthesize Linkedin
+
+
+    # Scrape and synthesize X
+    logging.info("Starting X process..")
+    x_process()
+    logging.info("X process complete..")
 
 """
     # LinkedIn
@@ -99,7 +116,7 @@ def main(person_name: str, person_li_url: str):
     # Step 2: Process YouTube transcripts
     print("Processing YouTube transcripts...")
     transcript_processor = TranscriptProcessor()
-    youtube_links = storage.load_links("youtube")
+    youtube_links = storage.load_links("youtube") d
     
     for video_id in youtube_links:
         if not storage.load_transcript(video_id):

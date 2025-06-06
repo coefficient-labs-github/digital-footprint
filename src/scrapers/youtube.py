@@ -1,5 +1,4 @@
-from typing import List, Dict, Any, Tuple, Optional
-import re
+from typing import Dict, Any, Tuple, Optional
 import requests
 import time
 import json
