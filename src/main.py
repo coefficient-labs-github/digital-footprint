@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from scrapers.youtube import YouTubeScraper
 from youtube_transcript_api import YouTubeTranscriptApi
 from synthesizers.transcripts_to_questions import process_transcripts
-#from scrapers.linkedin import LinkedInScraper
+from scrapers.linkedin import LinkedInScraper
 from scrapers.x import XScraper
 import logging
 
@@ -66,7 +66,13 @@ def youtube_process(youtube_scraper):
         logging.warning("No transcripts were successfully processed")
 
 def linkedin_process():
-    pass
+    li_handle = os.getenv("PERSON_LI_HANDLE")
+    if not li_handle:
+        print("PERSON_LI_HANDLE environment variable not set.")
+    else:
+        scraper = LinkedInScraper()
+        scraper.scrape_linkedin(li_handle) 
+    scraper.format_linkedin_data(max_posts=50)
 
 def x_process():
     # Initialize scraper
@@ -78,16 +84,12 @@ def x_process():
     # Format data/x_posts/{{PERSON_X_HANDLE}}.json into a cleaned csv, data/x_posts/cleaned{{PERSON_X_HANDLE}}.csv
     scraper.format_x_data()
 
-def main(person_name: str, person_li_url: str):    
-    # Initialize scrapers
-    youtube_scraper = YouTubeScraper()
-    #linkedin_scraper = LinkedInScraper()
-    #twitter_scraper = TwitterScraper()
-    
+def main(person_name: str):    
     logging.info(f"Collecting content for {person_name}...")
     
     # Scrape YouTube transcripts
     logging.info("Starting YouTube process...")
+    youtube_scraper = YouTubeScraper()
     youtube_process(youtube_scraper)
 
     # Synthesize youtube transcripts into questions
@@ -97,12 +99,17 @@ def main(person_name: str, person_li_url: str):
     logging.info("YouTube process complete")
 
     # Scrape and synthesize Linkedin
-
+    logging.info("Starting LinkedIn process...")
+    linkedin_process()
+    logging.info("LinkedIn process complete.")
 
     # Scrape and synthesize X
     logging.info("Starting X process..")
     x_process()
     logging.info("X process complete..")
+
+    # Snythesize document
+
 
 """
     # LinkedIn
