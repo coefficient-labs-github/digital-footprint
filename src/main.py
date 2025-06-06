@@ -84,7 +84,7 @@ def x_process():
     # Format data/x_posts/{{PERSON_X_HANDLE}}.json into a cleaned csv, data/x_posts/cleaned{{PERSON_X_HANDLE}}.csv
     scraper.format_x_data()
 
-def main(person_name: str):    
+def main(person_name: str):
     logging.info(f"Collecting content for {person_name}...")
     
     # Scrape YouTube transcripts
@@ -109,6 +109,7 @@ def main(person_name: str):
     logging.info("X process complete..")
 
     # Snythesize document
+    
 
 
 """
