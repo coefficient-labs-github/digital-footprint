@@ -1,0 +1,256 @@
+(base) tomyoungblood@mac demo-day-guest-researcher % "/Users/tomyoungblood/Documents/Main/Projects/Coefficient Labs/Coef/demo-day-guest-researcher/venv/bin/python" "/Users/tomyoungblood/Documents/Main/Projects/Coefficient Labs/Coef
+/demo-day-guest-researcher/src/main.py"
+INFO:root:Loaded PERSON_NAME: Kevin Moore Serac Ventures
+INFO:root:Collecting content for Kevin Moore Serac Ventures...
+INFO:root:Starting YouTube process...
+INFO:root:[YouTube] Searching for podcasts featuring: Kevin Moore Serac Ventures
+INFO:root:Found 10 initial YouTube videos for Kevin Moore Serac Ventures
+INFO:root:Filtering YouTube videos using short name: 'kevin moore'
+INFO:root:Filtered down to 10 relevant YouTube videos for Kevin Moore Serac Ventures
+INFO:root:Video titles: ['An Uncharted Path to Venture Capital Founder | Kevin Moore, Serac Ventures', 'This is Kevin Moore - Serac Ventures', 'The Path from LP to GP with Kevin Moore of Serac Ventures']
+INFO:root:Attempting to get transcript for video yxAx2VvCIfE (An Uncharted Path to Venture Capital Founder | Kevin Moore, Serac Ventures)
+WARNING:root:Attempt 1/10 failed for video yxAx2VvCIfE: no element found: line 1, column 0
+INFO:root:Successfully retrieved transcript for video yxAx2VvCIfE
+INFO:root:Attempting to get transcript for video gVA9HBKCRxg (This is Kevin Moore - Serac Ventures)
+INFO:root:Successfully retrieved transcript for video gVA9HBKCRxg
+INFO:root:Attempting to get transcript for video ZmZUtIES8HE (The Path from LP to GP with Kevin Moore of Serac Ventures)
+WARNING:root:Attempt 1/10 failed for video ZmZUtIES8HE: no element found: line 1, column 0
+INFO:root:Successfully retrieved transcript for video ZmZUtIES8HE
+INFO:root:Attempting to get transcript for video mMGtsZzJ6Eg (Grow Where You&#39;re Planted: Building Serac Ventures with Kevin Moore | Alone Together | S1E1)
+WARNING:root:Attempt 1/10 failed for video mMGtsZzJ6Eg: no element found: line 1, column 0
+INFO:root:Successfully retrieved transcript for video mMGtsZzJ6Eg
+INFO:root:Attempting to get transcript for video OyOClHpmXAs (The Power of Personal Storytelling in Venture Capital w/ Kevin Moore of Serac Ventures)
+WARNING:root:Attempt 1/10 failed for video OyOClHpmXAs: no element found: line 1, column 0
+WARNING:root:Attempt 2/10 failed for video OyOClHpmXAs: no element found: line 1, column 0
+WARNING:root:Attempt 3/10 failed for video OyOClHpmXAs: no element found: line 1, column 0
+INFO:root:Successfully retrieved transcript for video OyOClHpmXAs
+INFO:root:Attempting to get transcript for video mZFn1fw-BIM (Kevin Moore:  Serac Ventures:   Being on Both Sides of the Table)
+INFO:root:Successfully retrieved transcript for video mZFn1fw-BIM
+INFO:root:Attempting to get transcript for video 65Ex8XR7rJI (Early-Stage VC with Kevin Moore, Founder of Serac Ventures - Strategic Growth Podcast Ep194)
+INFO:root:Successfully retrieved transcript for video 65Ex8XR7rJI
+INFO:root:Attempting to get transcript for video pVA8HBJ27Qs (The Secrets to Building a Winning Investment Strategy with Kevin Moore)
+WARNING:root:Attempt 1/10 failed for video pVA8HBJ27Qs: no element found: line 1, column 0
+WARNING:root:Attempt 2/10 failed for video pVA8HBJ27Qs: no element found: line 1, column 0
+INFO:root:Successfully retrieved transcript for video pVA8HBJ27Qs
+INFO:root:Attempting to get transcript for video Wv1tIxg--Ek (#101 Zaka Presents My Journey Kevin Moore)
+WARNING:root:Attempt 1/10 failed for video Wv1tIxg--Ek: no element found: line 1, column 0
+WARNING:root:Attempt 2/10 failed for video Wv1tIxg--Ek: no element found: line 1, column 0
+WARNING:root:Attempt 3/10 failed for video Wv1tIxg--Ek: no element found: line 1, column 0
+WARNING:root:Attempt 4/10 failed for video Wv1tIxg--Ek: no element found: line 1, column 0
+WARNING:root:Attempt 5/10 failed for video Wv1tIxg--Ek: no element found: line 1, column 0
+INFO:root:Successfully retrieved transcript for video Wv1tIxg--Ek
+INFO:root:Attempting to get transcript for video MPaUKa6-JO8 (Investing Against the Grain)
+WARNING:root:Attempt 1/10 failed for video MPaUKa6-JO8: no element found: line 1, column 0
+WARNING:root:Attempt 2/10 failed for video MPaUKa6-JO8: no element found: line 1, column 0
+WARNING:root:Attempt 3/10 failed for video MPaUKa6-JO8: no element found: line 1, column 0
+INFO:root:Successfully retrieved transcript for video MPaUKa6-JO8
+INFO:root:Saving transcripts to src/data/transcripts/youtube_captions.json
+INFO:root:Successfully saved transcripts to src/data/transcripts/youtube_captions.json
+INFO:root:Successfully processed 10 transcripts for Kevin Moore Serac Ventures
+INFO:root:Synthesizing transcripts into questions...
+INFO:root:Reading transcripts from src/data/transcripts/youtube_captions.json
+Processing video: An Uncharted Path to Venture Capital Founder | Kevin Moore, Serac Ventures
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Processing video: This is Kevin Moore - Serac Ventures
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Processing video: The Path from LP to GP with Kevin Moore of Serac Ventures
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Processing video: Grow Where You&#39;re Planted: Building Serac Ventures with Kevin Moore | Alone Together | S1E1
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Processing video: The Power of Personal Storytelling in Venture Capital w/ Kevin Moore of Serac Ventures
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Processing video: Kevin Moore:  Serac Ventures:   Being on Both Sides of the Table
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Processing video: Early-Stage VC with Kevin Moore, Founder of Serac Ventures - Strategic Growth Podcast Ep194
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Processing video: The Secrets to Building a Winning Investment Strategy with Kevin Moore
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Processing video: #101 Zaka Presents My Journey Kevin Moore
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+Processing video: Investing Against the Grain
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Successfully generated questions from transcripts
+INFO:root:YouTube process complete
+INFO:root:Synthesizing and bucketing questions if needed...
+INFO:root:src/data/transcripts/bucketed_questions.json does not exist. Running bucketing process.
+INFO:root:Loading questions from src/data/transcripts/youtube_questions.json
+INFO:root:Loaded 63 questions from all videos.
+INFO:root:Cleaning and deduplicating questions using OpenAI...
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Cleaned and deduplicated down to 96 questions.
+INFO:root:Bucketing questions for: Early Life / Professional Journey
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Added 10 questions to bucket: Early Life / Professional Journey
+INFO:root:Bucketing questions for: Questions/Advice to help founders
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Added 10 questions to bucket: Questions/Advice to help founders
+INFO:root:Bucketing questions for: Questions/Advice to help VCs
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Added 10 questions to bucket: Questions/Advice to help VCs
+INFO:root:Bucketing questions for: Questions/Advice that pertains to Culturally Relevant Topics (ex: AI, Blockchain)
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Added 10 questions to bucket: Questions/Advice that pertains to Culturally Relevant Topics (ex: AI, Blockchain)
+INFO:root:Bucketing questions for: Questions/Advice that pertains to methodologies/frameworks they utilize in their work
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Added 10 questions to bucket: Questions/Advice that pertains to methodologies/frameworks they utilize in their work
+INFO:root:Bucketing questions for: Questions/Advice that cannot easily be put into any of the buckets above, but you think is interesting and should be included
+INFO:httpx:HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 200 OK"
+INFO:root:Added 10 questions to bucket: Questions/Advice that cannot easily be put into any of the buckets above, but you think is interesting and should be included
+INFO:root:Saved bucketed questions to src/data/transcripts/bucketed_questions.json
+INFO:root:Question bucketing complete.
+INFO:root:Starting LinkedIn process...
+INFO:root:[LinkedIn] Using PERSON_LI_HANDLE: kevinjosephmoore for Kevin Moore Serac Ventures
+INFO:root:Starting scrape for LinkedIn handle: kevinjosephmoore
+INFO:httpx:HTTP Request: POST https://api.apify.com/v2/acts/LQQIXN9Othf8f7R5n/runs "HTTP/1.1 201 Created"
+INFO:httpx:HTTP Request: GET https://api.apify.com/v2/actor-runs/jIxVZKC03VQafdbRn?waitForFinish=999999 "HTTP/1.1 200 OK"
+INFO:root:Actor run complete. Fetching results for kevinjosephmoore
+INFO:httpx:HTTP Request: GET https://api.apify.com/v2/datasets/58TIaWXKCrXTQFc2V/items?offset=0&limit=1000 "HTTP/1.1 200 OK"
+INFO:root:Fetched 99 posts for kevinjosephmoore
+INFO:root:Saved posts to src/data/linkedin_posts/kevinjosephmoore.json
+kevinjosephmoore
+INFO:root:Saved cleaned data to src/data/linkedin_posts/cleaned_kevinjosephmoore.csv
+INFO:root:LinkedIn process complete.
+INFO:root:Starting X process..
+INFO:root:[X] Using PERSON_X_HANDLE: kevinatseracvc for Kevin Moore Serac Ventures
+INFO:root:Starting scrape for X handle: kevinatseracvc
+INFO:httpx:HTTP Request: POST https://api.apify.com/v2/acts/nfp1fpt5gUlBwPcor/runs "HTTP/1.1 201 Created"
+INFO:httpx:HTTP Request: GET https://api.apify.com/v2/actor-runs/bPc6fPpb5rhdOdvuj?waitForFinish=999999 "HTTP/1.1 200 OK"
+INFO:root:Actor run complete. Fetching results for kevinatseracvc
+INFO:httpx:HTTP Request: GET https://api.apify.com/v2/datasets/L1aYeb0aWqVgM8Ny6/items?offset=0&limit=1000 "HTTP/1.1 200 OK"
+INFO:root:Fetched 246 posts for kevinatseracvc
+INFO:root:Saved posts to src/data/x_posts/kevinatseracvc.json
+INFO:root:Saved cleaned data to src/data/x_posts/cleaned_kevinatseracvc.csv
+INFO:root:X process complete..
+INFO:root:Synthesizing Notion page...
+INFO:httpx:HTTP Request: PATCH https://api.notion.com/v1/pages/20d69e3755468020abc7f57dd08ddb2b "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: PATCH https://api.notion.com/v1/blocks/20d69e3755468020abc7f57dd08ddb2b/children "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: PATCH https://api.notion.com/v1/blocks/20d69e3755468020abc7f57dd08ddb2b/children "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/databases "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: PATCH https://api.notion.com/v1/blocks/20d69e3755468020abc7f57dd08ddb2b/children "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/databases "HTTP/1.1 200 OK"
+INFO:root:PERSON_LI_HANDLE: kevinjosephmoore
+INFO:root:Sanitized LinkedIn filename: kevinjosephmoore
+INFO:root:Looking for LinkedIn CSV at: /Users/tomyoungblood/Documents/Main/Projects/Coefficient Labs/Coef/demo-day-guest-researcher/src/data/linkedin_posts/cleaned_kevinjosephmoore.csv
+INFO:root:Loaded 50 rows from /Users/tomyoungblood/Documents/Main/Projects/Coefficient Labs/Coef/demo-day-guest-researcher/src/data/linkedin_posts/cleaned_kevinjosephmoore.csv
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+INFO:httpx:HTTP Request: POST https://api.notion.com/v1/pages "HTTP/1.1 200 OK"
+Notion page has been updated: https://www.notion.so/20d69e3755468020abc7f57dd08ddb2b
+INFO:root:Notion page synthesis complete.

@@ -76,6 +76,6 @@ class XScraper:
         df = df.sort_values(by="viewCount", ascending=False).head(max_posts)
 
         # Save to CSV
-        cleaned_path = self.output_dir / f"cleaned{x_handle}.csv"
+        cleaned_path = self.output_dir / f"cleaned_{x_handle}.csv"
         df.to_csv(cleaned_path, index=False)
         logging.info(f"Saved cleaned data to {cleaned_path}")

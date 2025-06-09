@@ -3,6 +3,7 @@ import os
 from pathlib import Path
 from openai import OpenAI
 from typing import Dict, List
+import logging
 
 # Initialize OpenAI client
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
@@ -50,7 +51,7 @@ def process_transcripts():
     # Read the input JSON
     input_path = Path("src/data/transcripts/youtube_captions.json")
     output_path = Path("src/data/transcripts/youtube_questions.json")
-    
+    logging.info(f"Reading transcripts from {input_path}")
     with open(input_path, 'r') as f:
         captions_data = json.load(f)
     

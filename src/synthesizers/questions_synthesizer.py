@@ -2,6 +2,10 @@ import json
 import os
 from pathlib import Path
 from openai import OpenAI
+import logging
+
+# Setup logging
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
 
 # File path
 YOUTUBE_QUESTIONS_PATH = Path("src/data/transcripts/youtube_questions.json")
@@ -22,15 +26,18 @@ BUCKETS = [
 
 # 1. Load and flatten all questions
 def load_all_questions():
+    logging.info(f"Loading questions from {YOUTUBE_QUESTIONS_PATH}")
     with open(YOUTUBE_QUESTIONS_PATH, "r") as f:
         data = json.load(f)
     questions = []
     for video in data.values():
         questions.extend(video.get("questions", []))
+    logging.info(f"Loaded {len(questions)} questions from all videos.")
     return questions
 
 # 2. Clean questions using OpenAI
 def clean_questions(questions):
+    logging.info("Cleaning and deduplicating questions using OpenAI...")
     prompt = (
         "You are a helpful assistant. Clean up the following list of podcast questions: "
         "- Remove any duplicate or near-duplicate questions. "
@@ -46,14 +53,15 @@ def clean_questions(questions):
         ],
         temperature=0.1
     )
-    # Parse the response into a list
     cleaned = [q.strip().lstrip("0123456789. ") for q in response.choices[0].message.content.split("\n") if q.strip()]
+    logging.info(f"Cleaned and deduplicated down to {len(cleaned)} questions.")
     return cleaned
 
 # 3. Bucket questions using OpenAI
 def bucket_questions(cleaned_questions):
     bucketed = {}
     for bucket_name, bucket_desc in BUCKETS:
+        logging.info(f"Bucketing questions for: {bucket_name}")
         prompt = (
             f"From the following list of podcast questions, select the 10 best that fall under the bucket: '{bucket_name}'. "
             f"This bucket is defined as: {bucket_desc}.\n"
@@ -69,17 +77,29 @@ def bucket_questions(cleaned_questions):
             ],
             temperature=0.1
         )
-        # Parse the response into a list
         selected = [q.strip().lstrip("0123456789. ") for q in response.choices[0].message.content.split("\n") if q.strip()]
         if selected:
+            logging.info(f"Added {len(selected)} questions to bucket: {bucket_name}")
             bucketed[bucket_name] = selected
+        else:
+            logging.info(f"No questions found for bucket: {bucket_name}")
     return bucketed
 
 # 4. Save output
 def save_bucketed(bucketed):
     with open(OUTPUT_PATH, "w") as f:
         json.dump(bucketed, f, indent=2)
-    print(f"Saved bucketed questions to {OUTPUT_PATH}")
+    logging.info(f"Saved bucketed questions to {OUTPUT_PATH}")
+
+def synthesize_buckets_if_needed():
+    if not OUTPUT_PATH.exists():
+        logging.info(f"{OUTPUT_PATH} does not exist. Running bucketing process.")
+        questions = load_all_questions()
+        cleaned = clean_questions(questions)
+        bucketed = bucket_questions(cleaned)
+        save_bucketed(bucketed)
+    else:
+        logging.info(f"{OUTPUT_PATH} already exists. Skipping bucketing.")
 
 if __name__ == "__main__":
     questions = load_all_questions()

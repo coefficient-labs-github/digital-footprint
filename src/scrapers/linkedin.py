@@ -84,6 +84,7 @@ class LinkedInScraper:
         df.to_csv(cleaned_path, index=False)
         logging.info(f"Saved cleaned data to {cleaned_path}")
 
+    @staticmethod
     def get_linkedin_filename(linkedin_handle):
         # Extract the last part after the last slash, ignoring trailing slashes
         username = linkedin_handle.rstrip('/').split('/')[-1]

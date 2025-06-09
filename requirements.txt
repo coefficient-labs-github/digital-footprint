@@ -52,6 +52,7 @@ matplotlib-inline==0.1.7
 mdurl==0.1.2
 mysql-connector-python==8.3.0
 nest-asyncio==1.6.0
+notion-client==2.2.1
 numpy==1.26.1
 oauthlib==3.2.2
 openai==1.84.0
@@ -85,6 +86,7 @@ pytz==2023.3.post1
 pyzmq==26.0.3
 referencing==0.33.0
 regex==2024.11.6
+reportlab==4.1.0
 requests==2.31.0
 requests-oauthlib==2.0.0
 rich==13.7.0

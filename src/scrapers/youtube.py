@@ -15,10 +15,10 @@ class YouTubeScraper:
     def __init__(self):
         """Initialize the YouTube scraper."""
         self.youtube_api_key = os.getenv("YOUTUBE_API_KEY")
-        self.data_dir = Path("data")
-        self.data_dir.mkdir(exist_ok=True)
+        self.data_dir = Path("src/data")
+        self.data_dir.mkdir(parents=True, exist_ok=True)
         self.transcripts_dir = self.data_dir / "transcripts"
-        self.transcripts_dir.mkdir(exist_ok=True)
+        self.transcripts_dir.mkdir(parents=True, exist_ok=True)
         self.captions_file = self.transcripts_dir / "youtube_captions.json"
 
     def get_transcript_with_retry(self, video_id: str, max_retries: int = 10, initial_delay: int = 1) -> Tuple[Optional[str], Optional[str]]:
@@ -57,7 +57,7 @@ class YouTubeScraper:
                 if attempt < max_retries - 1:
                     logging.warning(f"Attempt {attempt + 1}/{max_retries} failed for video {video_id}: {str(e)}")
                     time.sleep(delay)
-                    delay *= 2  # Exponential backoff
+                    delay = min(delay * 2, 10)  # Exponential backoff, capped at 10 seconds
                 else:
                     logging.error(f"All {max_retries} attempts failed for video {video_id}: {str(e)}")
                     return None, None
@@ -72,6 +72,8 @@ class YouTubeScraper:
             transcripts_data: Dictionary containing transcript data
         """
         try:
+            self.transcripts_dir.mkdir(parents=True, exist_ok=True)
+            logging.info(f"Saving transcripts to {self.captions_file}")
             with open(self.captions_file, 'w', encoding='utf-8') as f:
                 json.dump(transcripts_data, f, indent=2, ensure_ascii=False)
             logging.info(f"Successfully saved transcripts to {self.captions_file}")
@@ -101,7 +103,6 @@ class YouTubeScraper:
                 'type': 'video',
                 'part': 'snippet',
                 'maxResults': max_results,
-                'videoDuration': 'long',  # Filter for longer videos (likely podcasts)
                 'relevanceLanguage': 'en'
             }
             
