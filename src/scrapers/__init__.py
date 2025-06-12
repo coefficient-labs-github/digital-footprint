@@ -1,4 +1,4 @@
-from .x import XScraper
-from .youtube import YouTubeScraper
- 
-__all__ = ['XScraper', 'YouTubeScraper'] 
+from .x_scraper import XScraper
+from .linkedin_scraper import LinkedInScraper
+
+__all__ = ['XScraper', 'LinkedInScraper'] 

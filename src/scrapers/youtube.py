@@ -7,6 +7,7 @@ import os
 from pathlib import Path
 from youtube_transcript_api import YouTubeTranscriptApi
 import logging
+from apify_client import ApifyClient
 
 # Load environment variables
 load_dotenv()
@@ -21,66 +22,7 @@ class YouTubeScraper:
         self.transcripts_dir.mkdir(parents=True, exist_ok=True)
         self.captions_file = self.transcripts_dir / "youtube_captions.json"
 
-    def get_transcript_with_retry(self, video_id: str, max_retries: int = 10, initial_delay: int = 1) -> Tuple[Optional[str], Optional[str]]:
-        """
-        Attempt to get transcript with retry logic and exponential backoff.
-        
-        Args:
-            video_id: YouTube video ID
-            max_retries: Maximum number of retry attempts
-            initial_delay: Initial delay between retries in seconds
-        
-        Returns:
-            tuple: (transcript_data, language_code) if successful, (None, None) if failed
-        """
-        ytt_api = YouTubeTranscriptApi()
-        delay = initial_delay
-        
-        for attempt in range(max_retries):
-            try:
-                # Get transcript list
-                trans_list = ytt_api.list_transcripts(video_id=video_id)
-                
-                # Try to get transcript in preferred language (English)
-                transcript = trans_list.find_transcript(['en'])
-                transcript_data = transcript.fetch()
-                
-                # Convert transcript data to string
-                if isinstance(transcript_data, list):
-                    full_transcript = ' '.join([part['text'] for part in transcript_data])
-                else:
-                    full_transcript = ' '.join([snippet.text for snippet in transcript_data])
-                
-                return full_transcript, transcript.language_code
-                
-            except Exception as e:
-                if attempt < max_retries - 1:
-                    logging.warning(f"Attempt {attempt + 1}/{max_retries} failed for video {video_id}: {str(e)}")
-                    time.sleep(delay)
-                    delay = min(delay * 2, 10)  # Exponential backoff, capped at 10 seconds
-                else:
-                    logging.error(f"All {max_retries} attempts failed for video {video_id}: {str(e)}")
-                    return None, None
-        
-        return None, None
-
-    def save_transcripts_to_json(self, transcripts_data: Dict[str, Any]) -> None:
-        """
-        Save transcripts data to a JSON file.
-        
-        Args:
-            transcripts_data: Dictionary containing transcript data
-        """
-        try:
-            self.transcripts_dir.mkdir(parents=True, exist_ok=True)
-            logging.info(f"Saving transcripts to {self.captions_file}")
-            with open(self.captions_file, 'w', encoding='utf-8') as f:
-                json.dump(transcripts_data, f, indent=2, ensure_ascii=False)
-            logging.info(f"Successfully saved transcripts to {self.captions_file}")
-        except Exception as e:
-            logging.error(f"Error saving transcripts to {self.captions_file}: {str(e)}")
-
-    def search_podcasts(self, person_name: str, max_results: int = 10) -> Dict[str, Any]:
+    def search_podcasts(self, person_name: str, company_name: str, max_results: int = 10) -> Dict[str, Any]:
         """
         Search for podcasts featuring the given person using YouTube Data API.
         
@@ -93,7 +35,7 @@ class YouTubeScraper:
         """
         try:
             # Construct the search query
-            search_query = f"{person_name} podcast"
+            search_query = f"{person_name} {company_name} podcast"
             
             # Make request to YouTube Data API
             url = f"https://www.googleapis.com/youtube/v3/search"
@@ -132,4 +74,83 @@ class YouTubeScraper:
         except Exception as e:
             print(f"Error in search_podcasts: {str(e)}")
             return {"videos": []}
+
+    def get_transcripts(self, APIFY_API_KEY: str, searched_videos: list, title_to_url: dict) -> Dict[str, Any]:
+        """Gets transcript for each podcast"""
+        # Initialize the ApifyClient with your API token
+        client = ApifyClient(APIFY_API_KEY)
+        urls = [video['url'] for video in searched_videos]
+        print(f"Scraping videos: {urls}")
         
+        # Prepare the Actor input - FORMAT URLS CORRECTLY HERE
+        run_input = {
+            "maxResults": 10,
+            "maxResultsShorts": 0,
+            "maxResultStreams": 0,
+            "startUrls": [{"url": video['url']} for video in searched_videos], 
+            "subtitlesLanguage": "any",
+            "subtitlesFormat": "srt",
+            "downloadSubtitles": True,
+            "saveSubsToKVS": False
+        }
+
+        # Run the Actor and wait for it to finish
+        run = client.actor("h7sDV53CddomktSi5").call(run_input=run_input)
+
+        # Fetch all items from the dataset
+        results = []
+        for item in client.dataset(run["defaultDatasetId"]).iterate_items():
+            subtitles = item.get('subtitles', [])
+            if isinstance(subtitles, list):
+                for sub in subtitles:
+                    if 'srt' in sub and isinstance(sub['srt'], str):
+                        # Parse SRT into segments
+                        sub['segments'] = self.parse_srt(sub['srt'])
+                        # Concatenate all segment texts into a single uninterrupted string
+                        sub['full_transcript'] = ' '.join(seg['text'] for seg in sub['segments'] if seg['text'])
+            results.append(item)
+            print(f"Found transcript for: {item.get('title', 'Unknown')}")
+        
+        # Save results to JSON file
+        output_path = self.data_dir / "transcripts" / "youtube_transcripts.json"
+        with open(output_path, 'w', encoding='utf-8') as f:
+            json.dump(results, f, indent=2, ensure_ascii=False)
+        
+        print(f"Saved {len(results)} transcripts to {output_path}")
+        
+        return results
+
+    def parse_srt(self, srt_str):
+        """
+        Parses an SRT string into a list of segments with start_time, end_time, and text.
+        """
+        import re
+        segments = []
+        srt_blocks = re.split(r'\n\s*\n', srt_str.strip())
+        for block in srt_blocks:
+            lines = block.strip().splitlines()
+            if len(lines) >= 3:
+                # SRT index (lines[0])
+                # Timestamp line (lines[1])
+                match = re.match(r'(\d{2}:\d{2}:\d{2},\d{3})\s*-->\s*(\d{2}:\d{2}:\d{2},\d{3})', lines[1])
+                if match:
+                    start_time, end_time = match.groups()
+                    text = ' '.join(lines[2:]).strip()
+                    segments.append({
+                        'start_time': start_time,
+                        'end_time': end_time,
+                        'text': text
+                    })
+        return segments
+
+def main():
+    person_name = os.getenv("PERSON_NAME")
+    company_name = os.getenv("COMPANY_NAME")
+    APIFY_API_KEY = os.getenv("APIFY_API_KEY")
+    youtube_scraper = YouTubeScraper()
+    searched_videos = youtube_scraper.search_podcasts(person_name, company_name)["videos"]
+    title_to_url = {video['title']: video['url'] for video in searched_videos}
+    trans = youtube_scraper.get_transcripts(os.getenv("APIFY_API_KEY"), searched_videos, title_to_url)
+
+
+main()

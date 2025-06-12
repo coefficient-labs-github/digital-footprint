@@ -11,11 +11,7 @@ import logging
 load_dotenv()
 logging.basicConfig(level=logging.INFO)
 
-def load_bucketed_questions() -> Dict[str, List[str]]:
-    """Load the bucketed questions from the JSON file."""
-    json_path = Path(__file__).parent.parent / "data" / "transcripts" / "bucketed_questions.json"
-    with open(json_path, 'r') as f:
-        return json.load(f)
+# Load Youtube Questions and Timestamps (todo)
 
 def load_x_posts() -> pd.DataFrame:
     """Load and sort X posts from CSV file."""
@@ -88,15 +84,12 @@ def create_linkedin_posts_database(notion: Client, parent_id: str) -> str:
     return database["id"]
 
 def update_notion_page():
-    """Update the existing Notion page with the bucketed questions."""
+    """Update the existing Notion page with X and LinkedIn posts."""
     # Initialize Notion client
     notion = Client(auth=os.getenv("NOTION_API_KEY"))
     
     # Get the person's name from environment variable
     person_name = os.getenv("PERSON_NAME")
-    
-    # Get the questions
-    questions = load_bucketed_questions()
     
     # Get the page ID from the URL
     page_id = extract_page_id(os.getenv("NOTION_PAGE"))
@@ -114,58 +107,7 @@ def update_notion_page():
         }
     )
     
-    # 2. Add toggles (no database inside toggles)
-    page_content = []
-    main_sections = [
-        "Previously Asked Podcast Questions"
-    ]
-    for section in main_sections:
-        toggle_content = []
-        if section == "Previously Asked Podcast Questions":
-            for category, question_list in questions.items():
-                category_toggle = {
-                    "object": "block",
-                    "type": "toggle",
-                    "toggle": {
-                        "rich_text": [{
-                            "type": "text",
-                            "text": {"content": category}
-                        }],
-                        "children": [
-                            {
-                                "object": "block",
-                                "type": "bulleted_list_item",
-                                "bulleted_list_item": {
-                                    "rich_text": [{
-                                        "type": "text",
-                                        "text": {"content": question.strip('"')}
-                                    }]
-                                }
-                            } for question in question_list
-                        ]
-                    }
-                }
-                toggle_content.append(category_toggle)
-        page_content.append({
-            "object": "block",
-            "type": "toggle",
-            "toggle": {
-                "rich_text": [{
-                    "type": "text",
-                    "text": {"content": section}
-                }],
-                "children": toggle_content
-            }
-        })
-    
-    # 3. Append toggles to the page
-    notion.blocks.children.append(
-        block_id=page_id,
-        children=page_content
-    )
-    
-    # 4. Add heading and database for Top X Posts (as siblings, not inside toggle)
-    # Add heading
+    # 2. Add heading and database for Top X Posts
     notion.blocks.children.append(
         block_id=page_id,
         children=[{
@@ -203,7 +145,7 @@ def update_notion_page():
                 }
             )
     
-    # 5. Add heading and database for Top LinkedIn Posts (as siblings, not inside toggle)
+    # 3. Add heading and database for Top LinkedIn Posts
     notion.blocks.children.append(
         block_id=page_id,
         children=[{
