@@ -152,5 +152,4 @@ def main():
     title_to_url = {video['title']: video['url'] for video in searched_videos}
     trans = youtube_scraper.get_transcripts(os.getenv("APIFY_API_KEY"), searched_videos, title_to_url)
 
-
 main()
