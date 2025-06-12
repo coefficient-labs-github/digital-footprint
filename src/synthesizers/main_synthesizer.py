@@ -83,6 +83,22 @@ def create_linkedin_posts_database(notion: Client, parent_id: str) -> str:
     )
     return database["id"]
 
+def srt_timestamp_to_yt(t):
+    """Convert SRT timestamp (e.g., 00:33:20,240) to YouTube &t=33m20s format."""
+    try:
+        parts = t.split(",")[0].split(":")
+        h, m, s = int(parts[0]), int(parts[1]), int(parts[2])
+        total_seconds = h * 3600 + m * 60 + s
+        m, s = divmod(total_seconds, 60)
+        if h > 0:
+            return f"{h}h{m}m{s}s"
+        elif m > 0:
+            return f"{m}m{s}s"
+        else:
+            return f"{s}s"
+    except Exception:
+        return "0s"
+
 def update_notion_page():
     """Update the existing Notion page with X and LinkedIn posts."""
     # Initialize Notion client
@@ -112,8 +128,8 @@ def update_notion_page():
         block_id=page_id,
         children=[{
             "object": "block",
-            "type": "heading_2",
-            "heading_2": {
+            "type": "heading_1",
+            "heading_1": {
                 "rich_text": [{
                     "type": "text",
                     "text": {"content": "Top X Posts Database"}
@@ -150,8 +166,8 @@ def update_notion_page():
         block_id=page_id,
         children=[{
             "object": "block",
-            "type": "heading_2",
-            "heading_2": {
+            "type": "heading_1",
+            "heading_1": {
                 "rich_text": [{
                     "type": "text",
                     "text": {"content": "Top LinkedIn Posts Database"}
@@ -180,6 +196,74 @@ def update_notion_page():
                     "URL": {"url": row["url"]}
                 }
             )
+    
+    # 4. Add bucketed questions as inline databases (tables)
+    notion.blocks.children.append(
+        block_id=page_id,
+        children=[{
+            "object": "block",
+            "type": "heading_1",
+            "heading_1": {
+                "rich_text": [{
+                    "type": "text",
+                    "text": {"content": "Questions Asked On Previous Podcasts"}
+                }]
+            }
+        }]
+    )
+    bucketed_path = Path(__file__).parent.parent / "data" / "transcripts" / "bucketed_questions.json"
+    if bucketed_path.exists():
+        with open(bucketed_path, "r") as f:
+            bucketed = json.load(f)
+        for bucket, questions in bucketed.items():
+            if not questions:
+                continue
+            # Add a heading for the bucket
+            heading_block = {
+                "object": "block",
+                "type": "heading_3",
+                "heading_3": {
+                    "rich_text": [{
+                        "type": "text",
+                        "text": {"content": bucket}
+                    }]
+                }
+            }
+            notion.blocks.children.append(block_id=page_id, children=[heading_block])
+            # Create the inline database (table)
+            db = notion.databases.create(
+                parent={"page_id": page_id},
+                title=[{"type": "text", "text": {"content": f"{bucket}"}}],
+                properties={
+                    "Question": {"title": {}},
+                    "Link": {"url": {}},
+                    "Timestamp": {"rich_text": {}},
+                    "Video": {"rich_text": {}}
+                }
+            )
+            db_id = db["id"]
+            # Add each question as a row
+            for q in questions:
+                # Add timestamp to the video URL
+                ts = q["timestamp"]
+                yt_url = q["video_url"]
+                if ts and yt_url:
+                    t_param = srt_timestamp_to_yt(ts)
+                    if "&" in yt_url:
+                        yt_url = yt_url + f"&t={t_param}"
+                    else:
+                        yt_url = yt_url + f"?t={t_param}"
+                notion.pages.create(
+                    parent={"database_id": db_id},
+                    properties={
+                        "Question": {
+                            "title": [{"text": {"content": q["question"]}}]
+                        },
+                        "Link": {"url": yt_url},
+                        "Timestamp": {"rich_text": [{"text": {"content": q["timestamp"]}}]},
+                        "Video": {"rich_text": [{"text": {"content": q["video_title"]}}]}
+                    }
+                )
     
     return f"https://www.notion.so/{page_id}"
 
